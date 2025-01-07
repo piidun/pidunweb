@@ -6,3 +6,7 @@
         <Card></Card>
     </div>
 </template>
+
+<script setup lang="ts">
+const { data } = await useFetch('/api/db');
+</script>

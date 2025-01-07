@@ -5,10 +5,13 @@
     --dark-yellow: #F2B263;
     --ancient-green: #86A69D;
   }
-
 body {
     padding: 0px;
     margin: 0px;
+}
+
+button {
+    cursor: pointer;
 }
 
 .button-primary {
@@ -17,5 +20,24 @@ body {
     padding: 10px;
     background-color: #32078e;
     font-size: 18px;
+    color: white;
+    margin-right: 0.2em;
+    margin-top: 0.2em;
+}
+
+.button-primary:hover {
+    background-color: #a982ff;
+}
+
+.button-secondary {
+        border: none;
+        border-radius: 4px;
+        padding: 10px;
+        background-color: #37353b;
+        font-size: 18px;
+        color: white;
+}
+
+.header-button:hover {
     color: white;
 }

@@ -2,22 +2,31 @@
     <header>
         <div>PIDUN</div>
         <div class="menu">
-            <button>
+            <button class="header-button" @click="go('mypage')">
                 Min klasse
             </button>
 
             <button>
-                Innstillinger
-            </button>
-
-            <button>
-                Logg ut
+                <div class="avatar">JD</div>
             </button>
         </div>
     </header>
 </template>
 
+<script setup lang="ts">
+const go = (to: string) => {
+    navigateTo(to);
+}
+</script>
+
 <style scoped>
+
+.avatar {
+    border-radius: 100%;
+    background-color: white;
+    padding: 0.4em;
+    margin: 0px;
+}
 
 .menu {
 
@@ -31,9 +40,11 @@
 }
 
 header {
+    max-height: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     background-color: var(--ancient-green);
     padding: 1rem;
     font-family: "DM Serif Text", serif;
