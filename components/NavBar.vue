@@ -4,7 +4,7 @@
             <span class="nav-icon"><Icon name="uil:basketball-hoop" size="1.5em"/></span>
             <span class="nav-text">Aktiviteter</span>
         </button>
-        <button class="nav-item">
+        <button class="nav-item" @click="go('/assignments')">
             <span class="nav-icon"><Icon name="uil:list-ol-alt" size="1.5em"/></span>
             <span class="nav-text">Oppgaver</span>
         </button>
@@ -18,6 +18,12 @@
         </button>
     </div>
 </template>
+
+<script setup lang="ts">
+const go = async (to: string) => {
+    await navigateTo(to);
+}
+</script>
 
 <style scoped>
 .nav-bar {

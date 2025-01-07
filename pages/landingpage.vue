@@ -14,7 +14,7 @@
 </div>
 
 <div class="info">
-    <img src="/assets/img/illustration1.webp">
+    <img src="/assets/img/illustration2.png">
     Logg inn enkelt med feide og opprett din klasse.
 </div>
 
@@ -55,6 +55,7 @@
 
 .info img {
     width: 100%;
+    background-color: white;
 }
 
 .info-bar {

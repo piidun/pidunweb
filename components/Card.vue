@@ -1,7 +1,6 @@
 <template>
     <div class="card">
-        <p>Du har en pågående aktivitet! 13 av 25 elever har besvart oppgaven.</p>
-        <button class="button-primary">Oppgave 2, 4. trinn</button>
+        <slot></slot>
     </div>
 </template>
 
