@@ -25,6 +25,17 @@ button {
     margin-top: 0.2em;
 }
 
+.button-danger {
+    border: none;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #650b0b;
+    font-size: 18px;
+    color: white;
+    margin-right: 0.2em;
+    margin-top: 0.2em;
+}
+
 .button-primary:hover {
     background-color: #a982ff;
 }

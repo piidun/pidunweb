@@ -2,7 +2,7 @@
     <header>
         <div>PIDUN</div>
         <div class="menu">
-            <button class="header-button" @click="go('mypage')">
+            <button class="header-button" @click="navigateTo('/mypage')">
                 Min klasse
             </button>
 
@@ -12,12 +12,6 @@
         </div>
     </header>
 </template>
-
-<script setup lang="ts">
-const go = (to: string) => {
-    navigateTo(to);
-}
-</script>
 
 <style scoped>
 

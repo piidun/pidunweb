@@ -2,6 +2,7 @@ export default eventHandler(async (event) => {
     const sql = usePostgres()
     const body = await readBody(event)
 
+    console.log(body);
     // Ensure all fields are provided
     const { name, email, class: studentClass, date_created } = body
     if (!name || !email || !studentClass || !date_created) {

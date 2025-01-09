@@ -1,5 +1,6 @@
 {
   "extends": "./.nuxt/tsconfig.json",
+  "moduleResolution":"node",
   "compilerOptions": {
     "module": "es2022",
     "target": "es2022"

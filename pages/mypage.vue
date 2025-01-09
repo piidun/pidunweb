@@ -1,17 +1,16 @@
 <template>
     <div>
       <h1>Min klasse</h1>
-      
       <h2>Trinn</h2>
       <label for="class-select">Velg gjeldende trinn</label>
-      <select id="class-select">
-        <option>1. klasse</option>
-        <option>2. klasse</option>
-        <option>3. klasse</option>
-        <option selected>4. klasse</option>
-        <option>5. klasse</option>
-        <option>6. klasse</option>
-        <option>7. klasse</option>
+      <select id="class-select" v-model="currentClass">
+        <option value="1">1. klasse</option>
+        <option value="2">2. klasse</option>
+        <option value="3">3. klasse</option>
+        <option value="4">4. klasse</option>
+        <option value="5">5. klasse</option>
+        <option value="6">6. klasse</option>
+        <option value="7">7. klasse</option>
       </select>
   
       <h2>Elever</h2>
@@ -19,7 +18,6 @@
         Legg til elev <Icon name="uil:plus"></Icon>
       </button>
   
-      <!-- Modal -->
       <div v-if="showModal" class="modal">
         <div class="modal-content">
           <h3>Legg til elev</h3>
@@ -41,7 +39,13 @@
         <h3>Registrerte elever:</h3>
         <ul>
           <li v-for="(student, index) in students" :key="index">
+            <div>
             <Icon name="uil:user"></Icon>{{ student.name }} ({{ student.email }})
+          </div>
+
+          <div>
+            <Icon name="uil:trash" class="trashcan" alt="Slett elev" @click="deleteStudent(student.id)"/>
+          </div>
           </li>
         </ul>
       </div>
@@ -49,34 +53,48 @@
   </template>
   
   <script setup lang="ts">
+  const currentClass = ref("1");
   const showModal = ref(false);
   const newStudent = ref({ name: '', email: '' });
-  const { data: students } = useFetch('/api/db')
+
+  const url = computed(() => {
+    return `/api/students/${currentClass.value}`;
+  });
+
+  const { data: students, refresh } = await useFetch(url);
   
+  const deleteStudent = async (id: string) => {
+    const result = await $fetch(`/api/students/${id}/delete`, {
+  method: 'DELETE'
+})
+refresh();
+}
+
   const addStudent = async () => {
-    const result = await $fetch('/api/post', {
+    const result = await $fetch('/api/students/post', {
   method: 'POST',
   body: {
     name: newStudent.value.name,
     email: newStudent.value.email,
-    class: 4,
+    class: currentClass.value,
     date_created: '2025-01-07'
   }
 })
-
     if (newStudent.value.name && newStudent.value.email) {
-      students.value.push({ ...newStudent.value });
-      newStudent.value = { name: '', email: '' };
+      refresh();
       showModal.value = false;
     }
   };
-  
   const closeModal = () => {
     showModal.value = false;
   };
   </script>
   
   <style scoped>
+  .trashcan:hover {
+    background-color: gray;
+    cursor: pointer;
+  }
   input {
     width: 100%;
     font-size: 20px;
@@ -121,7 +139,18 @@
   }
   
   .students-list li {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: solid 2px rgb(218, 219, 219);
+    padding: 0.5em;
     margin: 0.5em 0;
+    box-shadow: 2px 3px 4px rgba(74, 74, 74, 0.172);
+  }
+
+  .students-list li:hover {
+    background-color: rgb(142, 251, 226);
+    cursor: pointer;
   }
   </style>
   

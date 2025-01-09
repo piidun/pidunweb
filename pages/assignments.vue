@@ -14,7 +14,7 @@
 
         <Accordion title="Bibliotek">
             <p>Velge bøker fra bibliotek ut fra egne interesser og leseferdigheter</p>
-            <Task>Bibliotek - Sorter bøkene</Task>
+            <Task @click="go('/modules/booksort')">Bibliotek - Sorter bøkene</Task>
             <Task>Bøker - Lim sammen sidene</Task>
             <Task>Bøker - Hvilken side mangler?</Task>
         </Accordion>
@@ -26,3 +26,9 @@
         </Accordion>
     </div>
 </template>
+
+<script setup lang="ts">
+const go = (to: string) => {
+    navigateTo("/modules/booksort")
+}
+</script>
