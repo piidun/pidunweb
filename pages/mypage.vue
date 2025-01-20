@@ -53,12 +53,13 @@
   </template>
   
   <script setup lang="ts">
+  const currentTeacherId = ref(1);
   const currentClass = ref("1");
   const showModal = ref(false);
   const newStudent = ref({ name: '', email: '' });
 
   const url = computed(() => {
-    return `/api/students/${currentClass.value}`;
+    return `/api/students/get/${currentTeacherId.value}?class=${currentClass.value}`;
   });
 
   const { data: students, refresh } = await useFetch(url);
@@ -74,6 +75,7 @@ refresh();
     const result = await $fetch('/api/students/post', {
   method: 'POST',
   body: {
+    teacherId: currentTeacherId.value,
     name: newStudent.value.name,
     email: newStudent.value.email,
     class: currentClass.value,

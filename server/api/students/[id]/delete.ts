@@ -5,16 +5,17 @@ export default eventHandler(async (event) => {
     try {
       // Retrieve and sanitize the class parameter
       const id = getRouterParam(event, 'id');
-
+  
       if (!id) {
         return;
       }
+
       console.log(`Deleting student: ${id}`);
   
       // Execute the SQL query
       result = await sql`
         DELETE
-        FROM pidun.students 
+        FROM pidun.students
         WHERE id = ${id}`;
     } catch (error: any) {
       console.error('Error deleting student:', error);
