@@ -1,24 +1,22 @@
+import { Student } from "../types"
+
 export default eventHandler(async (event) => {
   const sql = usePostgres(); // Assumes usePostgres returns a database client
   let students = [];
 
   try {
-    // Retrieve and sanitize the class parameter
-    const teacherId = getRouterParam(event, 'teacherid');
-    const query = getQuery(event);
-    const currentClass = query.class;
-
-    if (!currentClass || !teacherId) {
+    const classId = getRouterParam(event, 'classid');
+    if (!classId) {
       return;
     }
 
-    console.log(`Fetching students for class: ${currentClass.toString()}`);
+    console.log(`Fetching students for class: ${classId.toString()}`);
 
     // Execute the SQL query
     students = await sql`
       SELECT * 
-      FROM pidun.students 
-      WHERE class = ${currentClass.toString()} AND teacher_id = ${teacherId}`;
+      FROM pidun.users 
+      WHERE class_id = ${classId.toString()}`;
   } catch (error: any) {
     console.error('Error fetching students:', error);
 

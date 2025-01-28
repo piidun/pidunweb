@@ -13,8 +13,7 @@
   </template>
   
   <script setup lang="ts">
-
-    const props = defineProps(['title'])
+  const props = defineProps(['title'])
   const isVisible = ref(false);
   
   const toggleVisibility = () => {

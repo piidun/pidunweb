@@ -4,12 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
   css: ["~/assets/css/main.css"],
-  modules: [
-    "@nuxt/fonts",
-    "@nuxt/icon",
-    "nuxt-tiptap-editor",
-    "nuxt-oidc-auth"
-  ],
+  modules: ["@nuxt/fonts", "@nuxt/icon", "nuxt-tiptap-editor", "nuxt-oidc-auth", '@nuxtjs/tailwindcss'],
 
   runtimeConfig: {
     oidc: {
@@ -23,7 +18,7 @@ export default defineNuxtConfig({
       middleware: {
 
       },
-      enabled: false,
+      enabled: true,
       session: {}
     },
   },
@@ -67,7 +62,7 @@ export default defineNuxtConfig({
       automaticRefresh: true,
       expirationThreshold: 3600,
     },
-enabled: false,
+    enabled: true,
     middleware: {
       globalMiddlewareEnabled: true,
       customLoginPage: false,

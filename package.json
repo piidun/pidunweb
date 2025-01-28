@@ -15,6 +15,7 @@
     "@nuxt/icon": "^1.10.3",
     "@nuxt/ui": "^2.20.0",
     "@nuxthub/core": "^0.8.10",
+    "@nuxtjs/tailwindcss": "^6.13.1",
     "@vueup/vue-quill": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.15.1",

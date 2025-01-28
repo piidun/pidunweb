@@ -1,109 +1,109 @@
 <template>
     <div>
-      <h1>Min klasse</h1>
-      <h2>Trinn</h2>
-      <label for="class-select">Velg gjeldende trinn</label>
-      <select id="class-select" v-model="currentClass">
-        <option value="1">1. klasse</option>
-        <option value="2">2. klasse</option>
-        <option value="3">3. klasse</option>
-        <option value="4">4. klasse</option>
-        <option value="5">5. klasse</option>
-        <option value="6">6. klasse</option>
-        <option value="7">7. klasse</option>
-      </select>
-  
-      <h2>Elever</h2>
-      <button class="button-primary" @click="showModal = true">
-        Legg til elev <Icon name="uil:plus"></Icon>
-      </button>
-  
-      <div v-if="showModal" class="modal">
-        <div class="modal-content">
-          <h3>Legg til elev</h3>
-          <form @submit.prevent="addStudent">
-            <label for="student-name">Navn:</label>
-            <input id="student-name" v-model="newStudent.name" required />
-  
-            <label for="student-email">E-post:</label>
-            <input id="student-email" type="email" v-model="newStudent.email" required />
-  
-            <button type="submit" class="button-primary">Legg til</button>
-            <button type="button" @click="closeModal" class="button-secondary">Avbryt</button>
-          </form>
+      <h1>Mine klasser</h1>
+      <div v-if="classes != undefined" class="w-1/2 border-2 border-black p-4 flex flex-col gap-10">
+      <div v-for="c in classes" :key="c.id">
+      <div class="flex flex-row justify-between"> 
+        <div class="flex flex-col font-bold">
+          Skole
+          <span class="font-light">
+            {{ c.class_name }}
+          </span>
+        </div>
+        <div class="flex flex-col font-bold">
+          Årstrinn <span class="font-light">{{ c.class_year }}</span>
+        </div>
+        <div class="flex flex-col font-bold">
+          Klasse <span class="font-light">{{ c.class_letter }}</span>
         </div>
       </div>
-  
-      <h3 v-if="students.length == 0">Ingen elever registrert.</h3>
-      <div v-if="students.length > 0" class="students-list">
-        <h3>Registrerte elever:</h3>
-        <ul>
-          <li v-for="(student, index) in students" :key="index">
-            <div>
-            <Icon name="uil:user"></Icon>{{ student.name }} ({{ student.email }})
-          </div>
 
-          <div>
-            <Icon name="uil:trash" class="trashcan" alt="Slett elev" @click="deleteStudent(student.id)"/>
-          </div>
-          </li>
-        </ul>
+      <div>
+        <label for="student-list">Elevliste</label>
+        <select id="student-list" class="border-2 border-black p-2 w-full">
+          <option v-for="student in detailsById[c.id]" :key="student"> {{ student.user_email }}</option>
+        </select>
+      </div>
+    </div>
+
+      </div>
+      <div class="flex flex-col gap-4 mt-20">
+        <div>
+          <label for="class-name">Skolens navn</label>
+          <input v-model="currentClass.class_name" id="class-name" type="text" placeholder="Et gjenkjennelig navn for din skole" class="border-2 border-black p-2 w-1/2">
+        </div>
+
+        <div>
+          <label for="class-number">Trinn</label>
+          <select v-model="currentClass.class_year" id="class-number" class="border-2 border-black p-2 w-1/2">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="class-letter">Klasse</label>
+          <select v-model="currentClass.class_letter" id="class-letter" class="border-2 border-black p-2 w-1/2">
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+            <option>D</option>
+            <option>E</option>
+          </select>
+        </div>
+        <button class="button-primary w-1/2" @click="registerClass()">
+          Registrer din klasse
+        </button>
       </div>
     </div>
   </template>
   
   <script setup lang="ts">
-  const currentTeacherId = ref(1);
-  const currentClass = ref("1");
-  const showModal = ref(false);
-  const newStudent = ref({ name: '', email: '' });
+  import type { SchoolClass } from '~/server/api/classes/types';
+  import type { Student } from '~/server/api/students/types';
 
-  const url = computed(() => {
-    return `/api/students/get/${currentTeacherId.value}?class=${currentClass.value}`;
-  });
+  const currentClass = ref<SchoolClass>({
+  class_name: '',
+  class_letter: 'A',
+  class_year: 1,
+  teacher_id: "",
+  id: ""
+});
 
-  const { data: students, refresh } = await useFetch(url);
-  
-  const deleteStudent = async (id: string) => {
-    const result = await $fetch(`/api/students/${id}/delete`, {
-  method: 'DELETE'
-})
-refresh();
+  const { data: classes, refresh: refreshClasses } = await useFetch<SchoolClass[]>("api/classes/get");
+
+    const detailsById = ref<Record<string, Student>>({});
+  if (classes.value) {
+  await Promise.all(
+    classes.value.map(async (schoolClass: SchoolClass) => {
+      const { data: detail } = await useFetch<Student>(`api/students/get/${schoolClass.id}`);
+      if (detail.value) {
+        detailsById.value[schoolClass.id] = detail.value;
+      }
+    })
+  );
 }
 
-  const addStudent = async () => {
-    const result = await $fetch('/api/students/post', {
-  method: 'POST',
-  body: {
-    teacherId: currentTeacherId.value,
-    name: newStudent.value.name,
-    email: newStudent.value.email,
-    class: currentClass.value,
-    date_created: '2025-01-07'
+  const registerClass = async () => {
+    console.log("tried")
+    let result = $fetch('/api/classes/post', {
+    method: 'POST',
+    body: currentClass.value
+  })
+  refreshClasses();
+  console.log(result)
   }
-})
-    if (newStudent.value.name && newStudent.value.email) {
-      refresh();
-      showModal.value = false;
-    }
-  };
-  const closeModal = () => {
-    showModal.value = false;
-  };
+
   </script>
-  
   <style scoped>
   .trashcan:hover {
     background-color: gray;
     cursor: pointer;
-  }
-  input {
-    width: 100%;
-    font-size: 20px;
-  }
-  select {
-    padding: 0.5em;
-    width: 20em;
   }
   
   label {

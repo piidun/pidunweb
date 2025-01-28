@@ -14,7 +14,9 @@
 
         <Accordion title="Bibliotek">
             <p>Velge bøker fra bibliotek ut fra egne interesser og leseferdigheter</p>
-            <Task @click="go('/modules/booksort')">Bibliotek - Sorter bøkene</Task>
+            <Task @click="newAssignment('booksort')">
+                Bibliotek - Sorter bøkene
+            </Task>
             <Task>Bøker - Lim sammen sidene</Task>
             <Task>Bøker - Hvilken side mangler?</Task>
         </Accordion>
@@ -30,5 +32,9 @@
 <script setup lang="ts">
 const go = (to: string) => {
     navigateTo("/modules/booksort")
+}
+
+const newAssignment = (assignment: string) => {
+    
 }
 </script>

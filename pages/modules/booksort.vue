@@ -4,7 +4,6 @@
 
     <!-- Drag Source -->
     <div class="library">
-
       <div class="shelves">
         <div class="drop-area" @dragover.prevent @drop="onDrop('A')">
           <div class="letter">
